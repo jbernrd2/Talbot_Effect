@@ -1,0 +1,12 @@
+This is a folder containing data for the real and imaginary parts of solutions to the schrodinger equation.
+Each file is a comma delimited text file, with three values per row. 
+The first value of the row is the real part of the solution
+The second value of the row is the imaginary part of the solution
+The third value of the row is the x position of the real and imaginary parts
+
+Each file name is named as follows:
+    "LinSch_(step function used)_(time at which the data was calculated)
+    
+    
+
+I hope this helps, if you have any questions ask me whenever: 630-696-6506
