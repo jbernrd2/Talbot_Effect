@@ -31,7 +31,9 @@ Gn_real = np.zeros(NFourier+1) # Array of fourier coefficients An
 Gn_imag = np.zeros(NFourier+1) # Array of fourier coefficients Bn
 K = 500                        # Number of iterations for fourier coefficients
 a0 = 1/2                       # Initial Fourier coefficient 
-t = 0.3
+t = 1                          # Time to graph solution at
+#T = "one_tenth_pi"            # String of rational time for data file
+T = str(t)                     # String of irrational time for data file
 
 ##################### Calculate Fourier Coefficients ##########################
 
@@ -44,7 +46,7 @@ for n in np.arange(1,NFourier + 1,1):
     Gn_real[n] = 1/(80)*Rsum
     Gn_imag[n] = 1/(80)*Isum
 
-############################## Approximation of stepFunction1 #########################################
+############################## Approximation of stepFunction1 #################
 '''
 X = 500 # Number of points to plot
 
@@ -58,9 +60,8 @@ for j in np.arange(X):
     ylist.append(sum )
 
 plt.plot(xlist,ylist)
-
 '''
-############################## Approx. Solution  ##############################
+#################### Approx. Solution to iut + uxx = 0  #######################
 #'''
 X = 500 # Number of points to plot
 
@@ -80,10 +81,26 @@ for x in xlist:
         n += 1
     uReal.append(Rsum)
     uImag.append(Isum)
+#'''    
+############################ write lists to files ##############################   
+#'''
+file = open("LinSch_step1_%s.txt" % T,"w+")
+
+for i in range(len(uReal)):
+    R = str(uReal[i])
+    I = str(uImag[i])
+    X = str(xlist[i])
+    file.write("%s,%s,%s \n\r" % (R,I,X))
     
+file.close()
+#'''
+############################## Plot dat shit ##################################
+'''
+
 plt.figure(figsize=(30,10))
 plt.plot(xlist,uReal)
-#'''   
+
+'''   
 ####################### Chen-Olver Solution ###################################
 '''
 X = 500 # number of points to plot
@@ -100,9 +117,3 @@ for x in xlist:
     
 plt.plot(xlist,ylist)
 '''    
-
-    
-
-        
-        
-    
