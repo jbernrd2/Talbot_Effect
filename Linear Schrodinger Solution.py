@@ -5,6 +5,7 @@
 ################################# imports #####################################
 import numpy as np
 import matplotlib.pyplot as plt
+
 pi = np.pi
 ########################### Define functions ##################################
 
@@ -25,45 +26,18 @@ def stepFunction2(x):         # 2pi periodic function
         return 1
     
 ########################### Initialize variables ##############################
-
-NFourier = 500                 # Number of positive fourier coefficients
+#'''
+NFourier = 1000                 # Number of positive fourier coefficients
 Gn_real = np.zeros(NFourier+1) # Array of fourier coefficients An
 Gn_imag = np.zeros(NFourier+1) # Array of fourier coefficients Bn
-K = 500                        # Number of iterations for fourier coefficients
 a0 = 1/2                       # Initial Fourier coefficient 
-t = 1                          # Time to graph solution at
-#T = "one_tenth_pi"            # String of rational time for data file
-T = str(t)                     # String of irrational time for data file
-
-##################### Calculate Fourier Coefficients ##########################
-
-for n in np.arange(1,NFourier + 1,1):
-    Rsum = 0
-    Isum = 0
-    for x in np.linspace(0,2*pi,K):
-        Rsum += stepFunction1(x)*np.cos(n*x)
-        Isum += stepFunction1(x)*np.sin(n*x)
-    Gn_real[n] = 1/(80)*Rsum
-    Gn_imag[n] = 1/(80)*Isum
-
-############################## Approximation of stepFunction1 #################
-'''
-X = 500 # Number of points to plot
-
-xlist = np.linspace(0,2*pi,X)
-ylist = []
-for j in np.arange(X):
-    x = xlist[j] 
-    sum = 0
-    for n in np.arange(NFourier):
-        sum += Gn_real[n]*np.cos(n*x) + Gn_imag[n]*np.sin(n*x)
-    ylist.append(sum )
-
-plt.plot(xlist,ylist)
-'''
+t = pi/7                 # Time to graph solution at
+T = "pi/7"            # String of rational time for data file
+#T = str(t)                     # String of irrational time for data file
+#'''
 #################### Approx. Solution to iut + uxx = 0  #######################
 #'''
-X = 500 # Number of points to plot
+X = 3000 # Number of points to plot
 
 xlist = np.linspace(0,2*pi,X)
 uReal = []
@@ -75,16 +49,22 @@ for x in xlist:
     Isum = 0
     n = 0
     while n < NFourier:
-        arg = n*x - n*n*t
-        Rsum += Gn_real[n]*np.cos(arg)
-        Isum += Gn_imag[n]*np.sin(arg)
+        if (n % 2 != 0):
+            argpos = n*x - n*n*t    # Positive argument
+            argneg = -n*x - n*n*t   # Negative argument
+        
+            Rsum += (2/n)*np.sin(argpos)
+            Rsum += (-2/n)*np.sin(argneg)
+            
+            Isum += -(2/n)*np.cos(argpos)
+            Isum += (2/n)*np.cos(argneg)
         n += 1
     uReal.append(Rsum)
     uImag.append(Isum)
 #'''    
 ############################ write lists to files ##############################   
-#'''
-file = open("LinSch_step1_%s.txt" % T,"w+")
+'''
+file = open("LinSch_step1_%s seconds_750points.txt" % T,"w+")
 
 for i in range(len(uReal)):
     R = str(uReal[i])
@@ -93,27 +73,29 @@ for i in range(len(uReal)):
     file.write("%s,%s,%s \n\r" % (R,I,X))
     
 file.close()
-#'''
-############################## Plot dat shit ##################################
 '''
-
+############################## Plot ##################################
+#'''
+plt.close()
+plt.close()
 plt.figure(figsize=(30,10))
 plt.plot(xlist,uReal)
+plt.title("Real part of Linear Schrodinger Solution at t = %s seconds" % T, fontsize=30)
 
-'''   
-####################### Chen-Olver Solution ###################################
+plt.figure(figsize=(30,10))
+plt.plot(xlist,uImag)
+plt.title("Imaginary part of Linear Schrodinger Solution at t = %s seconds" % T, fontsize = 30)
+plt.show()
+#'''
+######################## Read data files and plot #############################  
 '''
-X = 500 # number of points to plot
-t = 0.1*pi # time in seconds
-p = 1   # power of the pde
-xlist = np.linspace(0,2*pi,X)
-ylist = []
+xlist = []
+uReal = []
+uImag = []
 
-for x in xlist:
-    arg = t*(np.abs(stepFunction2(x)))**p
-    Re_y = stepFunction2(x)*np.cos(arg)
-    Im_y = stepFunction2(x)*np.sin(arg)
-    ylist.append(Re_y)
-    
-plt.plot(xlist,ylist)
-'''    
+with open("LinSch_step1_0.1s_750points.txt") as f:
+    file = f.readlines()
+    file = [x.strip() for x in file]
+    print(file)
+        #xlist.append(i[0]); uReal.append(i[1]); uImag.append(i[2])
+'''
