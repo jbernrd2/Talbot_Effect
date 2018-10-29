@@ -28,15 +28,16 @@ def stepFunction2(x):         # 2pi periodic function
 ########################### Initialize variables ##############################
 #'''
 NFourier = 1000                 # Number of positive fourier coefficients
-t = .001                 # Time to graph solution at
-T = "pi/30"            # String of rational time for data file
-T = str(t)                     # String of irrational time for data file
+t = .15                 # Time to graph solution at
+T = "0.25x"            # String of rational time for data file
+#T = str(t)                     # String of irrational time for data file
 #'''
 #################### Approx. Solution to iut + uxx = 0  #######################
 #'''
 X = 3000 # Number of points to plot
+xstart = pi  # X position to start graphing the solution
 
-xlist = np.linspace(0,2*pi,X)
+xlist = np.linspace(xstart,2*pi + xstart,X)
 uReal = []
 uImag = []
 
@@ -44,6 +45,7 @@ for x in xlist:
     Rsum = 0
     Isum = 0
     n = 0
+    t = 0.25*x
     while n < NFourier:
         if (n % 2 != 0):
             argpos = n*x - n*n*n*t    # Positive argument
@@ -65,11 +67,6 @@ plt.close()
 plt.figure(figsize=(30,10))
 plt.plot(xlist,uReal)
 plt.title("Real part of Airy Solution at t = %s seconds" % T, fontsize=30)
-
-plt.figure(figsize=(30,10))
-plt.plot(xlist,uImag)
-plt.title("Imaginary part of Airy Solution at t = %s seconds" % T, fontsize = 30)
-plt.show()
 #'''
 ############################ write lists to files ##############################   
 '''

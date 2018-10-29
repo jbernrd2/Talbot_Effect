@@ -28,18 +28,17 @@ def stepFunction2(x):         # 2pi periodic function
 ########################### Initialize variables ##############################
 #'''
 NFourier = 1000                 # Number of positive fourier coefficients
-Gn_real = np.zeros(NFourier+1) # Array of fourier coefficients An
-Gn_imag = np.zeros(NFourier+1) # Array of fourier coefficients Bn
-a0 = 1/2                       # Initial Fourier coefficient 
-t = pi/7                 # Time to graph solution at
-T = "pi/7"            # String of rational time for data file
+xstart = pi                     # Starting position to graph the solution at
+a0 = 1/2                        # Initial Fourier coefficient 
+t = pi/5                        # Time to graph solution at
+T = "0.1x"                      # String of rational time for data file
 #T = str(t)                     # String of irrational time for data file
 #'''
 #################### Approx. Solution to iut + uxx = 0  #######################
 #'''
 X = 3000 # Number of points to plot
 
-xlist = np.linspace(0,2*pi,X)
+xlist = np.linspace(xstart,2*pi + xstart,X)
 uReal = []
 uImag = []
 n = 1
@@ -48,6 +47,7 @@ for x in xlist:
     Rsum = 0
     Isum = 0
     n = 0
+    t = 0.1*x
     while n < NFourier:
         if (n % 2 != 0):
             argpos = n*x - n*n*t    # Positive argument
@@ -63,8 +63,8 @@ for x in xlist:
     uImag.append(Isum)
 #'''    
 ############################ write lists to files ##############################   
-'''
-file = open("LinSch_step1_%s seconds_750points.txt" % T,"w+")
+#'''
+file = open("LinSch_at_t_%s.txt" % T,"w+")
 
 for i in range(len(uReal)):
     R = str(uReal[i])
@@ -73,20 +73,18 @@ for i in range(len(uReal)):
     file.write("%s,%s,%s \n\r" % (R,I,X))
     
 file.close()
-'''
+#'''
 ############################## Plot ##################################
-#'''
-plt.close()
-plt.close()
-plt.figure(figsize=(30,10))
-plt.plot(xlist,uReal)
-plt.title("Real part of Linear Schrodinger Solution at t = %s seconds" % T, fontsize=30)
 
-plt.figure(figsize=(30,10))
-plt.plot(xlist,uImag)
-plt.title("Imaginary part of Linear Schrodinger Solution at t = %s seconds" % T, fontsize = 30)
-plt.show()
-#'''
+plt.close()
+
+f, axarr = plt.subplots(2, sharex=True,figsize = (30,10))
+
+axarr[0].plot(xlist, uReal)
+axarr[0].set_title("Real part of Linear Schrodinger Solution at t = %s" % T, fontsize=30)
+axarr[1].plot(xlist, uImag)
+axarr[1].set_title("Imaginary part of Linear Schrodinger Solution at t = %s" % T, fontsize=30)
+
 ######################## Read data files and plot #############################  
 '''
 xlist = []
