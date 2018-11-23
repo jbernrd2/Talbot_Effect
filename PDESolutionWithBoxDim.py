@@ -79,7 +79,7 @@ def soln(slope, const, NFourier, nPoints, d, neg):
     # If odd powered dispersion relation, only plot real part
     else:
         plt.figure(figsize = (30,10)); plt.plot(xlist,uReal);
-        plt.title("Real part of w(n) = n^%s Solution at t = %s*x + %s : BD = %i" %(D,m,c,realBox), fontsize=30)       
+        plt.title("Real part of w(n) = n^%s Solution at t = %s*x + %s : BD = %s" %(D,m,c,str(realBox)[0:-5]), fontsize=30)       
 
 ############################## listReturn #####################################
 # Takes data as input and returns one column of the data as a list
@@ -182,5 +182,5 @@ def box_dim(x, y, n, title):
 ############################ Run the solution #################################
 # Running "soln()" will calculate the solution, graph it, and calculate box dimensions
 # soln(slope,const,NFourier,nPoints,d,neg)
-soln(0.5,0,1000,10,4,True)
+soln(  0,    0.1*pi,    1000,    15,   3, False)
     
